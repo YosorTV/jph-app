@@ -1,25 +1,33 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { FC } from "react";
+import { Routes, Route } from 'react-router-dom';
+import { useSelector } from 'react-redux'
 
-function App() {
+import { currentTheme } from './store/selectors';
+
+import { ThemeProvider } from '@material-ui/core/styles';
+
+import { ClientPostById, ClientTodosById, Layout, NotFound } from './components';
+import { Posts, Contacts, Home } from './pages'
+import { DARK_THEME, LIGHT_THEME } from "./components/Ui/styled";
+
+
+const App:FC = () => {
+  const MuiTheme = useSelector(currentTheme);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <ThemeProvider theme={ MuiTheme === 'light' ? LIGHT_THEME : DARK_THEME }>
+      <Routes>
+      <Layout>
+        <Route path="/" element={<Home />}/>
+        <Route path="/clients" element={<Contacts />} />
+          <Route path="/clients/:clientId/todos" element={<ClientTodosById />}/>
+          <Route path="/clients/:clientId/posts" element={<ClientPostById />}/>
+        <Route path="/posts" element={<Posts />}/>
+        <Route path="*" element={<NotFound/>} />
+      </Layout>
+      </Routes>
+      </ThemeProvider>
+    </>
   );
 }
 
