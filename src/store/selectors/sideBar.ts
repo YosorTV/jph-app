@@ -1,3 +1,3 @@
-export const sideBar = (state:any):any => {
+export const sideBar = (state:any) => {
   return state.SideBar.isOpened;
 };

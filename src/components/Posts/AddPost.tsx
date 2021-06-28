@@ -21,13 +21,13 @@ export const AddPost:FC = () => {
   
   const { isDirty } = useFormState({ control });
 
-  const submitForm = (cb:any) => handleSubmit((values:any) => {
+  const submitForm = (callback:Function) => handleSubmit((values) => {
     const id = Math.ceil(Math.random() * 10000);
     const userId = Math.ceil(Math.random() * 100);
     const data = new Post(values.title, values.body, id, userId)
     dispatch(addPost(data))
     reset();
-    cb()
+    callback()
   });
 
   const [openDialog, setOpenDialog] = useState(false);
@@ -39,7 +39,6 @@ export const AddPost:FC = () => {
       <IconButton onClick = {handleOpen} style={{ marginLeft:"0.5rem", marginTop:"0.5rem" }}> 
         <PostAddIcon />
       </IconButton>
-
 
       <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={openDialog}>
         <form onSubmit = { submitForm(handleClose) }>

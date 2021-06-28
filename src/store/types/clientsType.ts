@@ -5,7 +5,7 @@ export enum clientsActionType {
   GET_CLIENTS_ERROR = "GET_USERS_ERROR",
 
   UPDATE_CLIENT = "UPDATE_CLIENT",
-
+  
   GET_CLIENT_TODOS = "GET_CLIENT_TODOS",
   GET_CLIENT_TODOS_SUCCESS = "GET_CLIENT_TODOS_SUCCESS",
   GET_CLIENT_TODOS_ERROR = "GET_CLIENT_TODOS_ERROR",
@@ -33,9 +33,6 @@ export interface IClientTodosState {
   isLoading:boolean,
 }
 
-type Data = {
-  payload:[]
-}
 
 interface IEditClient {
   type: clientsActionType.UPDATE_CLIENT,
@@ -48,7 +45,7 @@ interface IGetClient {
 
 interface IGetClientSuccess {
   type:clientsActionType.GET_CLIENTS_SUCCESS,
-  payload:Array<Data>
+  payload:any[]
 }
 
 interface IGetClientError {
@@ -62,7 +59,7 @@ interface IGetClienPosts {
 
 interface IGetClientPostsSuccess {
   type:clientsActionType.GET_CLIENT_POSTS_SUCCESS,
-  payload:Array<Data>
+  payload:any[]
 }
 
 interface IGetClientPostsError {
@@ -76,7 +73,7 @@ interface IGetClientTodos {
 
 interface IGetClientTodosSuccess {
   type:clientsActionType.GET_CLIENT_TODOS_SUCCESS,
-  payload:Array<Data>
+  payload:any[]
 }
 
 interface IGetClientTodosError {

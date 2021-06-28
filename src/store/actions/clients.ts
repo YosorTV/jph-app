@@ -1,8 +1,9 @@
 import { Dispatch } from 'redux'
 import { api } from '../../api'
+import { User } from '../../components/Ui/Table/types'
 import { clientsActionType, ClientTypes, ClientPosts, ClientTodos } from '../types'
 
-export const getClients = (limit = 5, page = 1):any => async (dispatch:Dispatch<ClientTypes>) => {
+export const getClients = (limit:number, page:number) => async (dispatch:Dispatch<ClientTypes>) => {
   try {
     dispatch({ type: clientsActionType.GET_CLIENTS })
       const { data } = await api.get(`/users?_limit=${limit}&_page=${page}`);
@@ -20,7 +21,7 @@ export const getClients = (limit = 5, page = 1):any => async (dispatch:Dispatch<
   }
 }
 
-export const updateClient = (client:any) => async (dispatch:Dispatch<ClientTypes>) => {
+export const updateClient = (client:User) => async (dispatch:Dispatch<ClientTypes>) => {
   try {
     const { data } = await api.patch(`/users/${client.id}`, client)
       dispatch({
@@ -55,7 +56,7 @@ export const getClientPosts = (id:string) => async (dispatch:Dispatch<ClientPost
   }
 }
 
-export const getClientTodos = (id:any, limit:any, page:any = 1) => async (dispatch:Dispatch<ClientTodos>) => {
+export const getClientTodos = (id:string, limit:number, page:number = 1) => async (dispatch:Dispatch<ClientTodos>) => {
   try {
     dispatch({ type: clientsActionType.GET_CLIENT_TODOS })
       const { data } = await api.get(`/todos?userId=${id}&_limit=${limit}&_page=${page}`);

@@ -52,10 +52,10 @@ export const Posts:FC = () => {
     reset({title, body})
   },[reset, title, body])
 
-const submitForm = (cb:any) => handleSubmit((values:any) => {
+const submitForm = (callback:Function) => handleSubmit((values) => {
   const EditedPost = new PostModel(values.title, values.body, selectedPost?.id, selectedPost?.userId);
   dispatch(editPost(EditedPost))
-  cb()
+  callback()
 });
 
   const handleClickOpen = (data:Object) => {

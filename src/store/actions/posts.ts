@@ -2,7 +2,7 @@ import { Dispatch } from 'react';
 import { api } from '../../api';
 import { postsActionType, PostType } from '../types';
 
-export const getPosts = (currentPage:any) => async (dispatch:Dispatch<PostType>) => {
+export const getPosts = (currentPage:number) => async (dispatch:Dispatch<PostType>) => {
   try {
     dispatch({ type: postsActionType.GET_POSTS })
     const { data } = await api.get(`posts?_limit=8&_page=${currentPage}`)
@@ -37,12 +37,12 @@ export const addPost = (newPost:Object) => async (dispatch:Dispatch<PostType>) =
   }
 }
 
-export const deletePost = (post:string) => async (dispatch:Dispatch<PostType>) => {
+export const deletePost = (postId:string) => async (dispatch:Dispatch<PostType>) => {
   try{
-    await api.delete(`/posts/${post}`);
+    await api.delete(`/posts/${postId}`);
     dispatch({ 
       type:postsActionType.DELETE_POST,
-      payload:post
+      payload:postId
     })
   } catch ({ response }) {
     if(response.status === 404){

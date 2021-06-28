@@ -22,23 +22,11 @@ import {
 import { Link } from '../styled';
 import { EditIcon, KeyboardArrowDownIcon, KeyboardArrowUpIcon } from '../icons';
 import { Button } from '@material-ui/core';
-import { Client } from '../../../models';
+import { User } from './types';
 
 
-export const DetailTable = (user:any) => {
+export const DetailTable = (user:User) => {
   const dispatch = useDispatch();
-
-  const client = new Client(
-    user?.name,
-    user?.email,
-    user?.phone,
-    user?.website,
-    user?.address?.street,
-    user?.address?.city,
-    user?.address?.suite,
-    user?.company?.name,
-    user.id
-  );
 
   const [openDetail, setOpenDetail] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
@@ -48,20 +36,24 @@ export const DetailTable = (user:any) => {
   const handleClickOpen = () => setOpenDialog(true);
   const handleClose = () => setOpenDialog(false);
   
-  const submitForm = (cb:any) => handleSubmit((values:any) => {
-    console.log('values: ', values);
-    const data = new Client(
-      values?.name,
-      values?.email,
-      values?.phone,
-      values?.website,
-      values?.street,
-      values?.city,
-      values?.suite,
-      values?.company,
-      user.id)
-      dispatch(updateClient({...data}))
-    cb()
+  const submitForm = (callback:Function) => handleSubmit((values) => {
+    const data:User = {
+      id: user.id,
+      name: values?.name,
+      email: values?.email,
+      address: {
+        street: values?.street,
+        suite: values?.suite,
+        city: values?.city,
+      },
+      phone:  values?.phone,
+      website: values?.website,
+      company: {
+        name: values?.company,
+      }
+    }
+      dispatch(updateClient(data));
+    callback();
     });
 
   return (
@@ -72,9 +64,9 @@ export const DetailTable = (user:any) => {
             {openDetail ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell align="left">{client?.name}</TableCell>
-        <TableCell align="left">{client?.email}</TableCell>
-        <TableCell align="left">{client?.phone}</TableCell>
+        <TableCell align="left">{user?.name}</TableCell>
+        <TableCell align="left">{user?.email}</TableCell>
+        <TableCell align="left">{user?.phone}</TableCell>
         <TableCell align="left">
           <Link to={`${user.id}/todos`}>Todos</Link>
         </TableCell>
@@ -104,11 +96,11 @@ export const DetailTable = (user:any) => {
               </TableHead>
               <TableBody>
                 <TableRow>
-                  <TableCell align="left">{client?.city}</TableCell>
-                  <TableCell align="left">{client?.street}</TableCell>
-                  <TableCell align="left">{client?.suite}</TableCell>
-                  <TableCell align="left">{client?.name}</TableCell>
-                  <TableCell align="left">{client?.website}</TableCell>
+                  <TableCell align="left">{user?.address?.city}</TableCell>
+                  <TableCell align="left">{user?.address?.street}</TableCell>
+                  <TableCell align="left">{user?.address?.suite}</TableCell>
+                  <TableCell align="left">{user?.company?.name}</TableCell>
+                  <TableCell align="left">{user?.website}</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
@@ -128,7 +120,7 @@ export const DetailTable = (user:any) => {
               <Controller
                 name="name"
                 control={control}
-                defaultValue={client?.name}
+                defaultValue={user?.name}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
                   <TextField
                     label="Name"
@@ -147,7 +139,7 @@ export const DetailTable = (user:any) => {
               <Controller
                 name="email"
                 control={control}
-                defaultValue={client?.email}
+                defaultValue={user?.email}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
                   <TextField
                     label="Email"
@@ -166,7 +158,7 @@ export const DetailTable = (user:any) => {
               <Controller
                 name="phone"
                 control={control}
-                defaultValue={client?.phone}
+                defaultValue={user?.phone}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
                   <TextField
                     label="Phone"
@@ -185,7 +177,7 @@ export const DetailTable = (user:any) => {
               <Controller
                 name="city"
                 control={control}
-                defaultValue={client?.city}
+                defaultValue={user?.address?.city}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
                   <TextField
                     label="City"
@@ -204,7 +196,7 @@ export const DetailTable = (user:any) => {
               <Controller
                 name="street"
                 control={control}
-                defaultValue={client?.street}
+                defaultValue={user?.address?.street}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
                   <TextField
                     label="Street"
@@ -223,7 +215,7 @@ export const DetailTable = (user:any) => {
               <Controller
                 name="suite"
                 control={control}
-                defaultValue={client?.suite}
+                defaultValue={user?.address?.suite}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
                   <TextField
                     label="Suite"
@@ -242,7 +234,7 @@ export const DetailTable = (user:any) => {
               <Controller
                 name="company"
                 control={control}
-                defaultValue={client?.company}
+                defaultValue={user?.company?.name}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
                   <TextField
                     label="Company"
@@ -261,7 +253,7 @@ export const DetailTable = (user:any) => {
               <Controller
                 name="website"
                 control={control}
-                defaultValue={client?.website}
+                defaultValue={user?.website}
                 render={({ field: { onChange, value }, fieldState: { error } }) => (
                   <TextField
                     label="Company"
